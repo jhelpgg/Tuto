@@ -1,11 +1,11 @@
 package fr.jhelp.data.entities
 
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.PrimaryKey
-import fr.jhelp.data.COLUMN_ROAD
+data class Address internal constructor(internal val uid: Long, val road: String) {
+    companion object {
+        internal const val TABLE_ADDRESS = "Address"
+        internal const val COLUMN_ROAD = "road"
 
-@Entity
-data class Address(
-    @PrimaryKey val uid: Long,
-    @ColumnInfo(name = COLUMN_ROAD) val road: String)
+    }
+
+    constructor(road: String) : this(-1L, road)
+}

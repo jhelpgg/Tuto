@@ -1,17 +1,27 @@
 package fr.jhelp.data.database
 
-import androidx.room.Database
-import androidx.room.RoomDatabase
-import androidx.room.TypeConverters
-import fr.jhelp.data.dao.AddressDao
-import fr.jhelp.data.dao.PersonDao
-import fr.jhelp.data.entities.Address
-import fr.jhelp.data.entities.Converters
-import fr.jhelp.data.entities.Person
+import android.content.Context
+import android.database.sqlite.SQLiteDatabase
+import fr.jhelp.injector.injected
 
-@Database(entities = [Address::class, Person::class], version = 1)
- @TypeConverters(Converters::class)
-internal abstract class TutoDatabase : RoomDatabase() {
-    abstract fun addressDao() : AddressDao
-    abstract fun personDao() : PersonDao
+internal object TutoDatabase {
+    private const val TABLE_VERSION = "Version"
+
+    const val COLUMN_UID = "uid"
+    const val COLUMN_VERSION = "version"
+
+    private val context by injected<Context>()
+    private val database: SQLiteDatabase by lazy {
+        val database = this.context.openOrCreateDatabase("TutoDatabase", Context.MODE_PRIVATE, null)
+        this.initialize(database)
+        database
+    }
+
+    internal fun createTable(tableName: String, vararg columns: Pair<String, DataType>) {
+
+    }
+
+    private fun initialize(database: SQLiteDatabase) {
+
+    }
 }
