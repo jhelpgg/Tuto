@@ -1,0 +1,161 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+package "app" <<Node>> {
+    package "ui" <<Rectangle>> {
+        package "composables" <<Rectangle>> {
+            Class "NavigationComposable" {
+                - navigationModel: NavigationModel (injected)
+                - splashScreenComposable: SplashScreenComposable (lazy)
+                - mainScreenComposable: MainScreenComposable (lazy)
+                + Show(Modifier)
+            }
+            Class "SplashScreenComposable" {
+                - splashScreenModel: SplashScreenModel (injected)
+                + Show(Modifier)
+            }
+            Class "MainScreenComposable" {
+                - mainScreenModel: MainScreenModel (injected)
+                + Show(Modifier)
+            }
+        }
+        package "preview" <<Rectangle>> {
+            Class "SplashScreenPreview"
+            Class "MainScreenPreview"
+        }
+        Class MainActivity {
+            + navigationComposable : NavigationComposable (lazy)
+            + onCreate(Bundle?)
+        }
+        Class MainApplication {
+            + onCreate()
+        }
+    }
+}
+
+package "models" <<Node>> {
+    package "actions" <<Rectangle>> {
+        package "navigation" {
+            Interface "NavigationAction"
+            Class "NavigateTo"  {
+                + screen: Screen
+            }
+        }
+        package "main" <<Rectangle>> {
+            Interface "MainScreenAction"
+
+            Class "MainUserInformation" {
+                + name: String
+                + age: Int
+            }
+
+            Class MainNewGame
+
+            Class MainLoadGame
+        }
+    }
+
+    package event <<Rectangle>> {
+       package "navigation" {
+            Interface "NavigationEvent"
+            Class "ShowScreen" {
+                + screen: Screen
+            }
+        }
+        package main <<Rectangle>> {
+            Interface "MainScreenEvent"
+            Class "MainUserInformationEvent" {
+                + name: String
+                + age: Int
+            }
+            Class MainChangeObjectPosition {
+                + objectDescription : ObjectDescription
+                + position : Position
+            }
+        }
+    }
+
+    package "shared" <<Rectangle>> {
+        enum "Screen" {
+            SPLASH
+            MAIN
+        }
+
+        Interface "NavigationModel" {
+            + events : StateFlow<NavigationEvent>
+            + doAction(NavigationAction)
+        }
+
+        Interface "SplashScreenModel" {
+            + onShow()
+        }
+
+        Interface "MainScreenModel" {
+            + events : StateFlow<MainScreenEvent>
+            + doAction(MainScreenAction)
+        }
+    }
+
+    package implementation <<Rectangle>> {
+        ~Class "NavigationModelImplementation" {
+            + events : MutableStateFlow<NavigationEvent>
+            + doAction(NavigationAction)
+        }
+
+        ~Class "SplashScreenModelImplementation" {
+            + onShow()
+        }
+
+        ~Class "MainScreenModelImplementation" {
+            + events : MutableStateFlow<MainScreenEvent>
+            + doAction(MainScreenAction)
+        }
+    }
+}
+
+package "data" <<Node>> {
+    package "actions" <<Rectangle>> {
+    }
+    package "events" <<Rectangle>> {
+    }
+    package shared <<Rectangle>> {
+    }
+    package implementation <<Rectangle>> {
+    }
+}
+
+package "network" <<Node>> {
+    package "actions" <<Rectangle>> {
+    }
+    package "events" <<Rectangle>> {
+    }
+    package shared <<Rectangle>> {
+    }
+    package implementation <<Rectangle>> {
+    }
+}
+
+package "injector" <<Node>> {
+
+}
+
+package "tools" <<Node>> {
+
+}
+
+NavigationAction <|-- NavigateTo
+
+MainScreenAction <|-- MainUserInformation
+MainScreenAction <|-- MainNewGame
+MainScreenAction <|-- MainLoadGame
+
+NavigationEvent <|-- ShowScreen
+
+MainScreenEvent <|-- MainUserInformationEvent
+MainScreenEvent <|-- MainChangeObjectPosition
+
+NavigationModelImplementation -up-|> NavigationModel
+SplashScreenModelImplementation -up-|> SplashScreenModel
+MainScreenModelImplementation -up-|> MainScreenModel
+
+@enduml

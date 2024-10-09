@@ -1,0 +1,19 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+
+actor User
+participant app.ui.MainScreenComposable
+participant models.shared.MainScreenModel
+participant models.shared.NavigationModel
+participant app.ui.NavigationComposable
+participant app.MainActivity
+
+User -> app.ui.MainScreenComposable: click on start button
+app.ui.MainScreenComposable --> models.shared.MainScreenModel: MainNewGame
+models.shared.MainScreenModel --> models.shared.NavigationModel: NavigateTo
+models.shared.NavigationModel --> app.ui.NavigationComposable: NavigateToEvent
+app.ui.NavigationComposable --> app.MainActivity: show the game screen
+
+@enduml

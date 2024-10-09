@@ -36,6 +36,7 @@ dependencies {
     implementation(libs.material)
 
     api(project(":injector"))
+    api(project(":tools"))
     implementation(project(":data"))
 
     testImplementation(libs.junit)

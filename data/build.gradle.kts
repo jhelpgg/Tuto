@@ -36,6 +36,7 @@ dependencies {
     implementation(libs.material)
 
     implementation(project(":injector"))
+    implementation(project(":tools"))
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

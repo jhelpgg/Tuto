@@ -1,0 +1,18 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+actor User
+participant app
+participant models
+participant data
+participant network
+
+User -> app
+app --> models : action
+models --> data : action
+data --> network : action
+network --> data : event
+data --> models : event
+models --> app : event
+
+@enduml
